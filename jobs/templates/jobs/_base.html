@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class=" w-full max-w-7xl mx-auto">
+        <div class="flex flex-col max-w-screen-xl p-5 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8 border-b">
+            <div class="flex flex-row items-center justify-between lg:justify-start">
+                <a href="{% url 'freelancer-list' %}" class="text-3xl font-bold tracking-tighter text-blue-600 transition duration-500 ease-in-out transform tracking-relaxed lg:pr-8"> Freelancers </a>
+            </div>
+    
+            <nav class="flex-col items-center flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row lg:pl-2">
+
+                
+                <div class="inline-flex items-center gap-2 list-none lg:ml-auto">
+                    {% if user.is_authenticated %}
+                    <p>{{user.email}}</p>
+                    {% if user.freelancer.profile_pic %}
+                    <img class="w-10 border rounded-full mr-4" src="{{ user.freelancer.profile_pic.url }}" alt="Profile pic">
+                    {% endif %}
+                    {% if user.business.profile_pic %}
+                    <img class="w-10 border rounded-full mr-4" src="{{ user.business.profile_pic.url }}" alt="Profile pic">
+                    {% endif %}
+                    <form action="{% url 'account_logout' %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="items-center block px-10 py-2.5 text-base font-medium text-center text-blue-600 transition duration-500 ease-in-out transform border-2 border-white shadow-md rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Logout</button>
+                    </form>
+                    {% else %}
+                    <a href="{% url 'account_login' %}">
+                        <button class="items-center block px-10 py-2.5 text-base font-medium text-center text-blue-600 transition duration-500 ease-in-out transform border-2 border-white shadow-md rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Sign in</button>
+                    </a>
+                    <a href="{% url 'account_signup' %}">
+                        <button class="items-center block px-10 py-3 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-blue-600 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Sign up</button>
+                    </a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+        <div class="container p-12">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </div>
+</body>
+</html>
